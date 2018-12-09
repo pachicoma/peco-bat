@@ -52,9 +52,11 @@ REM echo "Goto>%PECO_ROOT_DIR%"
 set PECO_DIRLIST=%PECO_TEMPLIST%
 dir /s /b /ad "%PECO_ROOT_DIR%" >"%PECO_DIRLIST%"
 call :SELECT_DIR PECO_ROOT_DIR
-echo GoTo:%PECO_ROOT_DIR%
-call :GOTO_DIR %PECO_ROOT_DIR%
-timeout 3
+if not "%PECO_ROOT_DIR%"=="" (
+    echo GoTo:%PECO_ROOT_DIR%
+    call :GOTO_DIR %PECO_ROOT_DIR%
+    timeout 3
+)
 goto :EXIT_PROC
 
 REM --------------------------------------------------
@@ -73,6 +75,7 @@ REM --------------------------------------------------
 REM pecoでディレクトリを選択
 REM --------------------------------------------------
 :SELECT_DIR
+set %1=
 for /f "tokens=*" %%a in ('find /N /V "" ^< ^"%PECO_DIRLIST%^" ^| %PECO_CMD%') do (
     cls
     REM findコマンドで出した行番号を削除したパスを取り出す
